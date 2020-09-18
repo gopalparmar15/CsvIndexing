@@ -28,24 +28,22 @@ class CSVIndexing {
         //create indexing
         IndexWriter indexWriter = new IndexWriter(dir, indexWriterConfig);
         //add data in field using add method
-        int x=0;
 
         List<String> result=display();
         for (String s : result) {
             s = s.replace("\"", "");
-           // System.out.println(s);
             String[] abc = s.split(",");
-            addDoc(indexWriter,Integer.parseInt(abc[0]) , abc[1]);
+            addDoc(indexWriter,abc[0],abc[1]);
         }
         indexWriter.close();
 
     }
 
-    private static void addDoc(IndexWriter w,int id, String question) throws IOException{
+    private static void addDoc(IndexWriter w, String id, String question) throws IOException{
         //create document
         Document doc = new Document();
         //add id
-        doc.add(new IntPoint("id",id));
+        doc.add(new StringField("id",id,Field.Store.YES));
         //add name
         doc.add(new StringField("question", question, Field.Store.YES));
         w.addDocument(doc);
